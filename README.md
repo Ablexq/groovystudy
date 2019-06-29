@@ -18,6 +18,10 @@
 
 Android Studio 的编译构建，是基于Gradle的， 而Gradle又是基于Groovy， Groovy又是基于Java的。
 
+Gradle是一个基于JVM的新一代构建工具，可以用于自动化自定义有序的步骤来完成代码的编译、
+测试和打包等工作，让重复的步骤变得简单，用于实现项目自动化，是一种可编程的工具，
+你可以用代码来控制构建流程最终生成可交付的软件。构建工具可以帮助你创建一个重复的、
+可靠的、无需手动介入的、不依赖于特定操作系统和IDE的构建.
 
 # Groovy基本语法理论介绍
 
@@ -132,6 +136,8 @@ Groovy是一种开源的脚本语言，在Java基础上进行了扩展，支持�
 
 每一个Gradle构建脚本中都会包含三个基本的构建块，project、task和property。
 
+gradle -q taskName
+
 ``` 
 //查看依赖树
 gradle dependencies 
@@ -140,10 +146,47 @@ gradle tasks
 //查看project
 gradle project
 
-gradle -q taskName
+
+//编译并打包
+gradle assemble
+gradle assembleDebug
+gradle assembleRelease
+
+gradle check
+gradle build
+gradle clean
 ```
+build任务：构建项目
+
+clean任务：删除build目录及构建生成的文件
+
+assemble任务：不执行单元测试，只编译和打包
+
+check任务：只执行单元测试
+
+javadoc任务：生成Java格式的doc api文档
 
 
+Gradle日志级别:
+``` 
+级别      用于
+ERROR   错误消息
+QUIET     重要的信息消息
+WARNING 警告消息
+LIFECYCLE   进度信息消息
+INFO    信息性消息
+DEBUG   调试消息
+```
+gradle -q +任务名称来运行一个指定的task，这个q是命令行开关选项，
+通过开关选项可以控制输出的日志级别。
+
+```
+开关选项    输出日志级别
+无日志选项   LIFECYCLE及更高级别
+-q或者 --quiet    QUIET及更高级别
+-i或者 --info INFO及更高级别
+-d或者 --debug    DEBUG及更高级别
+``` 
 # 看懂Gradle脚本
  
 [看懂Gradle脚本（1）- Groovy语言的Map语法糖](https://blog.csdn.net/zxhoo/article/details/29570685)
@@ -170,9 +213,23 @@ testCompile ([group: 'junit', name: 'junit', version: '4.12'])
 //task   myTask     {...}
 //task  'myTask'    {...}
 //task ('myTask',   {...})
+
+
+//外部依赖 完整写法
+compile group:'com.squareup.okhttp3',name:'okhttp', version:'3.0.1' 
+//外部依赖 简单写法
+compile 'com.squareup.okhttp3:okhttp:3.0.1' 
 ```
 
+# 自定义属性 ext ：
 
+Project、Task和SourceSet都允许用户添加额外的自定义属性、并对自定义属性进行读取和设置
+
+方式：通过ext属性，添加多个通过ext代码块
+
+优点：相比局部变量有广泛的作用域，可以跨Project、跨Task访问，只要能访问这些属性所属的对象即可
+
+[要点提炼| Gradle指南](https://www.jianshu.com/p/1274c1f1b6a4)
 
 
 

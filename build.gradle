@@ -344,10 +344,37 @@ task A {
         println "this is task A."
     }
 }
+//操作符<< 是doLast方法的快捷版本
 //可简写为如下：
 task B << {
     println "this is task B"
 }
+
+
+//在hello任务的基础上增加了一个名为go的任务，
+// 通过dependsOn来指定依赖的任务为hello，因此go任务运行在hello之后。
+task hello3 << {
+    println 'Hello world!33333333333333'
+}
+task go(dependsOn: hello3) << {
+    println "go for it"
+}
+
+
+//任务的分组和描述
+//Gradle有任务组的概念，可以为任务配置分组和描述，以便于更好的管理任务，拥有良好的可读性。
+task hello4 {
+    group = 'build444'
+    description = 'hello world444'
+    doLast {
+        println "任务分组: ${group}"
+        println "任务描述: ${description}"
+    }
+}
+task go4(dependsOn: hello4) << {
+    println "go for it4444"
+}
+
 
 //直接使用project的task()方法创建
 task helloTask {
@@ -359,7 +386,7 @@ this.tasks.create(name: 'helloTask2') {
     println 'this is helloTask2'
 }
 
-
+//动态定义任务,定时器
 4.times { counter ->
     task "task$counter" {
         println "I'm task number $counter"
@@ -376,7 +403,27 @@ hello {
     text = 'World'
 }
 
+println("======================= ext 自定义属性 =============================")
+//给Project添加自定义属性
+ext.age = 18
+ext {
+    phone = 13888888888
+    address = 'Beijing'
+}
+//给Task添加自定义属性
+task customProperty {
+    ext.inner = 'innnnnner'
 
+    doLast {
+        println project.hasProperty('customProperty') //true
+        println project.hasProperty('age') //true
+        println project.hasProperty('inner')//返回fasle
+
+        println "${age}"
+        println "${phone}"
+        println "${inner}"
+    }
+}
 
 
 
