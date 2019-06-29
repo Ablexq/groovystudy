@@ -49,6 +49,9 @@ Person person2 = null
 println(person1 == person2)//==等同于equals(),不会空指针
 
 //---------------
+//Groovy中的Bean和Java中的Bean有一个很大的不同，
+// 即Groovy为每一个字段都会自动生成getter和setter，
+// 并且我们可以通过像访问字段本身一样调用getter和setter
 
 task javaBean {
     //Groovy中定义JavaBean
@@ -118,7 +121,7 @@ task stringTest {
     println '单引号定义的字符串：$str2'
 }
 
-println("=========================================================")
+println("=========================闭包================================")
 
 //========================== 闭包 ==================================
 //闭包的声明:
@@ -126,7 +129,59 @@ println("=========================================================")
 //                  code
 //      }
 
+task closure {
+    //自定义闭包的执行
+    mEach {
+        println it
+    }
+
+    //向闭包传递参数
+    mEachWithParams { m, n -> //m,n ->将闭包的参数和主体区分离开来
+        println "${m} is ${n}"
+    }
+}
+
+//1.定义一个方法，参数closure用于接收闭包
+//2.闭包的执行就是花括号里面代码的执行
+//3.闭包接收的参数就是闭包参数closure参数中的i，如果是一个参数默认就是it变量
+def mEach(closure) {
+    for (int i in 1..5) {
+        closure(i)
+    }
+}
+
+//向闭包传递参数
+def mEachWithParams(closure) {
+    def map = ["name": "Groovy", "age": 10]
+    map.each {
+        closure(it.key, it.value)
+    }
+}
+
+println("-------------------------------------")
+
+def closure = { int a, String b ->
+    println "a=${a}, b=${b}, I am a closure!"
+}
+
+// 这里省略了闭包的参数类型
+def test_type = { a, b ->
+    println "a=${a}, b=${b}, I am a closure!"
+}
+
+def xq = { a, b ->
+    a + b
+}
+
+closure(100, "xq")
+test_type.call(100, 200)    //闭包调用可以用call，也可以直接像Java方法一样加括号调用。
+def c = xq(100, 200)
+println c
+
+println("-------------------------------------")
+
 //无参闭包：
+//当闭包只有一个参数时，默认就是 it，反之闭包有多个参数时，就需要将参数定义出来
 def test = {
     println "隐含的参数 ${it}, I am a closure!"
 }
@@ -162,6 +217,17 @@ task list {
         println it
     }
 }
+
+println("----------------------------")
+
+def emptyList = []
+
+def arr = [100, "hello", true]
+arr[1] = "world"
+println arr[0]
+println arr[1]
+arr << 200      //List还有一种看起来很奇怪的操作符<<，左移位表示向List中添加新元素
+println arr.size
 
 println("========================== map ===============================")
 //======================= java.util.LinkedHashMap ========
@@ -206,9 +272,15 @@ println()
 dataSource.each {
     println "one parameters, find [${it.key} : ${it.value}]"
 }
+println()
+dataSource.each { entry ->
+    println "entry->$entry,${entry.key}, ${entry.value}"
+}
 println("=========================================================")
 
 //======================== 读取普通文件 ===============================
+//Gradle技术之二 Groovy对文件的操作
+//https://www.jianshu.com/p/85fe860cd7ba
 
 def file = new File("test.txt")
 file.eachLine { line, lineNo ->
@@ -257,8 +329,52 @@ def methodA(int a, int b) {
     a + b
 }
 
+println("========================== task的定义 ==================================")
+//Gradle技术之四 - Gradle的Task详解
+//https://www.jianshu.com/p/9d727baed0f1
+
+//以下三种方式完全等价：
+//task   myTask     {...}
+//task  'myTask'    {...}
+//task ('myTask',   {...})
+
+//迭代创建
+task A {
+    doLast {
+        println "this is task A."
+    }
+}
+//可简写为如下：
+task B << {
+    println "this is task B"
+}
+
+//直接使用project的task()方法创建
+task helloTask {
+    println 'this is helloTask'
+}
+
+//使用TaskContainer创建task
+this.tasks.create(name: 'helloTask2') {
+    println 'this is helloTask2'
+}
 
 
+4.times { counter ->
+    task "task$counter" {
+        println "I'm task number $counter"
+    }
+}
+
+println("======================= 简单插件开发 =================================")
+
+// 调用HelloPlugin.gradle中的代码
+apply from: 'HelloPlugin.gradle'
+// 设置参数
+hello {
+    enable = true
+    text = 'World'
+}
 
 
 
