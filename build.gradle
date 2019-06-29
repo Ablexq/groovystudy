@@ -1,0 +1,272 @@
+plugins {
+    id 'java'
+}
+
+group 'com'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+//==========================java bean===============================
+class Person {//默认public
+    private String name//末尾分好可省略
+    private int age
+
+    Person(String name, int age) {//Alt+insert可快速生成
+        this.name = name
+        this.age = age
+    }
+
+    String getName() {
+        return name
+    }
+
+    void setName(String name) {
+        this.name = name
+    }
+
+    int getAge() {
+        age//return可省略
+    }
+
+    void setAge(int age) {
+        this.age = age
+    }
+}
+
+Person person1 = new Person("xq", 18)
+println(person1.age)//属性可用.号获取
+
+Person person2 = null
+println(person1 == person2)//==等同于equals(),不会空指针
+
+//---------------
+
+task javaBean {
+    //Groovy中定义JavaBean
+    Student student = new Student()
+    student.name = "Groovy"
+    student.age = 10
+
+    student.setName("Gradle")
+    println "名字是：" + student.name
+    //不能调用Getter方法获取值
+//	println "名字是："+student.getName
+    println "年龄是：${student.age}"
+    println "分数是：" + student.score
+}
+
+class Student {
+    private String name
+    private int age
+    //定义的Getter方法所对应的属性可以直接调用
+    public String getScore() {
+        100
+    }
+
+    //属性的Getter、Setter方法
+    public String setName(String name) {
+        this.name = name
+    }
+
+    public void getName() {
+        name
+    }
+}
+
+println("======================= 字符串 ==================================")
+def limit = 10
+println(limit)
+println limit//这里可省略括号
+
+def str1 = "双引号字符串"//推荐
+def str2 = '单引号字符串'
+def str3 = ''' 
+可换行的字符串
+'''
+def str4 = "插入变量 ： ${limit}" //${},推荐
+def str5 = "插入变量 ： $limit"  //$ ，只有一个变量的时候可以省去大括号
+println(str1)
+println(str2)
+println(str3)
+println(str4)
+println(str5)
+
+task stringTest {
+    println "双引号定义的字符串：" + str1
+    println "双引号定义的字符串：" + str1.class
+    println "单引号定义的字符串：" + str2
+
+    //变量动态变化
+    str1 = true
+    println "双引号定义的字符串：" + str1.class
+
+    //使用$运算符
+    println "双引号定义的字符串：${str1}"
+    //只有一个变量的时候可以省去中括号
+    println "双引号定义的字符串：$str1"
+
+    //单引号定义的字符串不能使用表达式进行运算
+    println '单引号定义的字符串：$str2'
+}
+
+println("=========================================================")
+
+//========================== 闭包 ==================================
+//闭包的声明:
+//      { parameters ->
+//                  code
+//      }
+
+//无参闭包：
+def test = {
+    println "隐含的参数 ${it}, I am a closure!"
+}
+test(100)
+
+println("======================== list集合 ===========================")
+//========================== java.util.ArrayList ===========
+def fruits = ['apple', 'orange']//声明
+fruits << 'banana'//添加数据
+fruits[0] = "gradle"//集合中第一项重新赋值
+println fruits[0]//根据key取出数据
+println fruits.size
+println fruits.getClass()
+
+task list {
+    //定义List
+    def list = [1, 2, 3, 4, 5, 6]
+    def weekList = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
+    println "list的类型：" + list.class
+    println "weekList的类型：" + weekList.class
+
+    //访问集合里面的元素
+    println '第一个元素：' + list[0]//访问第一个元素
+    println '第二个元素：' + list[1]//访问第二个元素，以此类推
+
+    println '最后一个元素：' + list[-1]//访问最后一个元素
+    println '倒数第二个元素：' + list[-2]//访问倒数第二个元素，以此类推
+    println '某个范围内元素：' + list[2..4]//访问某个范围内元素，以此类推
+
+    //使用each遍历集合中的元素
+    weekList.each {
+        //使用it作为迭代的元素变量，不能写错喔
+        println it
+    }
+}
+
+println("========================== map ===============================")
+//======================= java.util.LinkedHashMap ========
+
+def dataSource = ['groupId': 1, 'year': '2017']//声明
+dataSource.groupName = '行业'//添加数据
+dataSource['year'] = '2018'//更新数据
+
+//获取
+println dataSource['year']//获取value
+println dataSource.groupId//获取value
+
+println dataSource.size()
+println dataSource.getClass()
+//由此可以看出Groovy中国map就是java中的LinkedHashMap，
+// 访问key不仅可以通过map.获取dataSource.groupName
+// 也通过map[key]获取dataSource['year']获取。
+
+task map {
+
+    //定义Map
+    def map = ['name': 'Groovy', 'age': 10]
+    println "map的类型：" + map.getClass().name
+
+    //访问Map里面的元素
+    println map.name
+    println map['name']
+
+    //遍历Map中的元素
+    map.each {
+        println "Key:${it.key},value:${it.value}"
+    }
+}
+
+println("=========================================================")
+
+//=========================== 遍历 ==========================
+dataSource.each { key, value ->
+    println "two parameters, find [${key} : ${value}]"
+}
+println()
+dataSource.each {
+    println "one parameters, find [${it.key} : ${it.value}]"
+}
+println("=========================================================")
+
+//======================== 读取普通文件 ===============================
+
+def file = new File("test.txt")
+file.eachLine { line, lineNo ->
+    println "${lineNo}  ${line}"
+}
+file.eachLine { line ->
+    println "${line}"
+}
+println("========================方法============================")
+
+//================================方法=====================================
+
+task method {
+    //方法调用
+    methodA(1, 2)
+    methodA 1, 2
+
+    //获取方法返回的结果
+    def a = methodA 10, 20
+    println '获取方法返回的结果：' + a
+
+    //代码块作为参数传递
+    def list = [1, 2, 3, 4, 5]
+    //闭包参数
+    list.each(
+            {
+                println it
+            }
+    )
+
+    //Groovy规定，如果方法的最后一个参数是闭包，可以直接放到方法外面
+    list.each() {
+        println it
+    }
+
+    //简写方式
+    list.each {
+        println it
+    }
+}
+
+//方法的定义
+def methodA(int a, int b) {
+    println a + b
+    //Groovy中return语句不是必须的，默认将最后一句代码的结果作为返回值
+    a + b
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
