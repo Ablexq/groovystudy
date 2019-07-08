@@ -1,0 +1,86 @@
+//Gradle技术之四 - Gradle的Task详解
+//https://www.jianshu.com/p/9d727baed0f1
+
+//以下三种方式完全等价：
+//task   myTask     {...}
+//task  'myTask'    {...}
+//task ('myTask',   {...})
+
+//Task是和Project关联的，所以，我们要利用Project的task函数来创建一个Task
+//task myTask  <==myTask是新建Task的名字
+//task myTask { configure closure }
+//task myType << { task action } <==注意，<<符号是doLast的缩写
+//task myTask(type: SomeType)
+//task myTask(type: SomeType) { configure closure } //type是父类
+
+
+println "======================================"
+
+//迭代创建
+task taskA {
+    doLast {
+        println "this is task1 A."
+    }
+}
+
+println "======================================"
+
+//操作符<< 是doLast方法的快捷版本
+//可简写为如下：
+task taskB << {
+    println "this is task1 B"
+}
+
+println "======================================"
+
+//在hello任务的基础上增加了一个名为go的任务，
+// 通过dependsOn来指定依赖的任务为hello，因此go任务运行在hello之后。
+task hello3 << {
+    println 'Hello world!33333333333333'
+}
+
+task task4(dependsOn: hello3) << {
+    println "go for it"
+}
+
+println "======================================"
+
+//任务的分组和描述
+//Gradle有任务组的概念，可以为任务配置分组和描述，以便于更好的管理任务，拥有良好的可读性。
+task hello4 {
+    group = 'build444'
+    description = 'hello world444'
+    doLast {
+        println "任务分组: ${group}"
+        println "任务描述: ${description}"
+    }
+}
+
+task task5(dependsOn: hello4) << {
+    println "go for it4444"
+}
+
+println "======================================"
+
+//直接使用project的task()方法创建
+task helloTask {
+    println 'this is helloTask'
+}
+
+//使用TaskContainer创建task
+this.tasks.create(name: 'helloTask2') {
+    println 'this is helloTask2'
+}
+
+println "======================================"
+
+//动态定义任务,定时器
+4.times { counter ->
+    task "task1$counter" {
+        println "I'm task1 number $counter"
+    }
+}
+
+//
+//优先顺序为depensOn > 自己 > doFirst > doLast > “>>符号”
+

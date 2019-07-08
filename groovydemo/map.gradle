@@ -1,0 +1,45 @@
+//======================= java.util.LinkedHashMap ========
+
+def dataSource = ['groupId': 1, 'year': '2017']//声明
+dataSource.groupName = '行业'//添加数据
+dataSource['year'] = '2018'//更新数据
+
+//获取方式一：
+println dataSource['year']//
+//获取方式二：
+println dataSource.groupId//
+
+println dataSource.size()
+println dataSource.getClass()
+//由此可以看出Groovy中国map就是java中的LinkedHashMap，
+// 访问key不仅可以通过map.获取dataSource.groupName
+// 也通过map[key]获取dataSource['year']获取。
+
+dataSource.each { key, value ->
+    println "two parameters, find [${key} : ${value}]"
+}
+println()
+dataSource.each {
+    println "one parameters, find [${it.key} : ${it.value}]"
+}
+println()
+dataSource.each { entry ->
+    println "entry->$entry, ${entry.key}, ${entry.value}"
+}
+
+
+task map {
+
+    //定义Map
+    def map = ['name': 'Groovy', 'age': 10]
+    println "map的类型：" + map.getClass().name
+
+    //访问Map里面的元素
+    println map.name
+    println map['name']
+
+    //遍历Map中的元素
+    map.each {
+        println "Key:${it.key},value:${it.value}"
+    }
+}

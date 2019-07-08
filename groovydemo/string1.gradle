@@ -1,0 +1,75 @@
+group = "com"
+version = "1.0-SNAPSHOT"
+
+//====================字符串的定义方式====================
+//单引号
+def str1 = 'android'
+//双引号
+def str2 = "java"
+//三引号
+def str3 = '''kotlin'''
+
+//扩展属性ext
+ext {
+    str4 = "flutter"
+}
+
+//具体类型
+String str5 = "gradle"
+
+task printStr {
+    println "==============字符串开始==================="
+    println "第一个字符串：${str1}"
+    println "第一个字符串：$str1"
+    println "第一个字符串：" + str1
+
+    println '第一个字符串：${str1}'    //第一个字符串：${str1}
+    println '第一个字符串：$str1'      //第一个字符串：$str1
+    println '第一个字符串：' + str1
+
+    println "----------------------------------------"
+
+    println "第二个字符串：${str2}"
+    println "第二个字符串：$str2"
+    println "第二个字符串：" + str2
+
+    println '第二个字符串：${str2}'    //第二个字符串：${str2}
+    println '第二个字符串：$str2'      //第二个字符串：$str2
+    println '第二个字符串：' + str2
+
+    println "----------------------------------------"
+
+    println "第三个字符串：${str3}"
+    println "第三个字符串：$str3"
+    println "第三个字符串：" + str3
+
+    println '第三个字符串：${str3}'    //第三个字符串：${str3}
+    println '第三个字符串：$str3'      //第三个字符串：$str3
+    println '第三个字符串：' + str3
+
+    println "----------------------------------------"
+
+    println "第四个字符串：${str4}"
+    println "第四个字符串：$str4"
+    println "第四个字符串：" + str4
+
+    println '第四个字符串：${str4}'    //第四个字符串：${str4}
+    println '第四个字符串：$str4'      //第四个字符串：$str4
+    println '第四个字符串：' + str4
+    
+    println "----------------------------------------"
+
+    println "第五个字符串：${str5}"
+    println "第五个字符串：$str5"
+    println "第五个字符串：" + str5
+
+    println '第五个字符串：${str5}'    //第五个字符串：${str5}
+    println '第五个字符串：$str5'      //第五个字符串：$str5
+    println '第五个字符串：' + str5
+    println "===============字符串结束=================="
+    
+    /*
+    推荐：拼接字符串时，推荐使用双引号
+    * */
+}
+

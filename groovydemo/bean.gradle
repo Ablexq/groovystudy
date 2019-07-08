@@ -1,0 +1,85 @@
+class Person {//默认public
+    private String name//末尾分好可省略
+    private int age
+
+    Person(String name, int age) {//Alt+insert可快速生成
+        this.name = name
+        this.age = age
+    }
+
+    String getName() {
+        return name
+    }
+
+    void setName(String name) {
+        this.name = name
+    }
+
+    int getAge() {
+        age//return可省略
+    }
+
+    void setAge(int age) {
+        this.age = age
+    }
+}
+
+def lists = [new Person("xq1", 12), new Person("xq2", 15), new Person("xq3", 18)]
+lists.each {
+    println it
+    println it.name
+    println it.age
+}
+
+Person person1 = new Person("xq", 18)
+println(person1.age)//属性可用.号获取
+if (person1 instanceof Person) {
+    println "我是：" + person1.class
+} else {
+    println "我不是：Person"
+}
+
+Person person2 = null
+println(person1 == person2)//==等同于equals(),不会空指针
+
+if (person2 instanceof Person) {
+    println "我是：" + person2.class
+} else {
+    println "我不是：Person"
+}
+//---------------
+//Groovy中的Bean和Java中的Bean有一个很大的不同，
+// 即Groovy为每一个字段都会自动生成getter和setter，
+// 并且我们可以通过像访问字段本身一样调用getter和setter
+
+task javaBean {
+    //Groovy中定义JavaBean
+    Student student = new Student()
+    student.name = "Groovy"
+    student.age = 10
+
+    student.setName("Gradle")
+    println "名字是：" + student.name
+    //不能调用Getter方法获取值
+//	println "名字是："+student.getName
+    println "年龄是：${student.age}"
+    println "分数是：" + student.score
+}
+
+class Student {
+    private String name
+    private int age
+    //定义的Getter方法所对应的属性可以直接调用
+    public String getScore() {
+        100
+    }
+
+    //属性的Getter、Setter方法
+    public String setName(String name) {
+        this.name = name
+    }
+
+    public void getName() {
+        name
+    }
+}

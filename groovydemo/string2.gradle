@@ -1,0 +1,16 @@
+def limit = 10
+task stringTest1 {
+    println(limit)
+    println limit//这里可省略括号
+    println "插入变量 ： ${limit}" //${},推荐
+    println "插入变量 ： $limit"  //$ ，只有一个变量的时候可以省去大括号
+}
+
+def str1 = "第一个字符串"
+def str2 = '第二个字符串'
+def str3 = '''第三个字符串'''
+task stringTest2 {
+    println "合并字符串：" + str1 + "-" + str2 + "-" + str3
+    println "合并字符串： ${str1} - ${str2} - ${str3}"
+    println "合并字符串： $str1 - $str2 - $str3"
+}

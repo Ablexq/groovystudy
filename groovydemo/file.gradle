@@ -1,0 +1,15 @@
+//Gradle技术之二 Groovy对文件的操作
+//https://www.jianshu.com/p/85fe860cd7ba
+
+def file = new File("test.txt")
+
+task testFile {
+
+    file.eachLine { line, lineNo ->
+        println "${lineNo}  ${line}"
+    }
+    file.eachLine { line ->
+        println "${line}"
+    }
+
+}

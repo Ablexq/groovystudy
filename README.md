@@ -1,6 +1,78 @@
 
+Gradle基于Groovy，Groovy又基于Java。
+所以，Gradle执行的时候和Groovy一样，会把脚本转换成Java对象。
 
-推荐阅读：
+Gradle主要有三种对象，这三种对象和三种不同的脚本文件对应，
+在gradle执行的时候，会将脚本转换成对应的对端：
+
+> •Gradle对象：
+当我们执行gradle xxx或者什么的时候，gradle会从默认的配置脚本中构造出一个Gradle对象。
+在整个执行过程中，只有这么一个对象。Gradle对象的数据类型就是Gradle。
+我们一般很少去定制这个默认的配置脚本。
+
+> •Project对象：
+每一个build.gradle会转换成一个Project对象。
+
+> •Settings对象：
+显然，每一个settings.gradle都会转换成一个Settings对象。
+
+[Gradle史上最详细解析 ](https://www.baidu.com/link?url=cRuystoM7CUBqkzBYZFAGAugJfc-iebYEhR21HAQiUqskdHo73ZUGbny89dqv30G0utiDlCx5HK-7J2DBj8vcq&wd=&eqid=a860c3a200006749000000065d22d6ab)
+
+[Gradle 任务](https://blog.csdn.net/pf_1308108803/article/details/95044353)
+
+# Gradle脚本的执行分为三个过程：
+
+【初始化 (解析模块：settings.gradle)】
+
+> 分析有哪些module将要被构建，为每个module创建对应的 project实例。
+这个时候settings.gradle文件会被解析。
+
+【此处可执行：beforeEvaluate】
+
+【配置（解析task：build.gradle）】
+
+> 处理所有的模块的 build 脚本，处理依赖，属性等。
+这个时候每个模块的build.gradle文件会被解析并配置，
+这个时候会构建整个task的链表（这里的链表仅仅指存在依赖关系的task的集合，不是数据结构的链表）。
+
+【此处可执行：afterEvaluate】
+
+> 如果注册了多个project.afterEvaluate回调，那么执行顺序等同于注册顺序.
+
+【执行（执行task：doLast，doFirst）】
+
+> 根据task链表来执行某一个特定的task，这个task所依赖的其他task都将会被提前执行。
+
+# gradle的解析顺序：
+
+``` 
+1、rootproject 的setting.gradle,
+2、rootproject的build.gradle,
+3、各个subproject。
+所以project下的build.gradle会先于app下的build.gradle。
+```
+在解析setting.gradle之后，开始解析build.gradle之前，
+这里如果要干些事情（更改build.gradle内容），可以写在beforeEvaluate
+
+在所有build.gradle解析完成后，开始执行task之前，此时所有的脚本已经解析完成，
+task，plugins等所有信息可以获取，task的依赖关系也已经生成，
+如果此时需要做一些事情，可以写在afterEvaluate
+
+每个task都可以定义doFirst，doLast，用于定义在此task执行之前或之后执行的代码
+
+优先顺序为depensOn > 自己 > doFirst > doLast > “>>符号”
+
+
+在build.gradle中，我们可以通过apply plugin: 引入插件，
+``` 
+apply plugin: 'com.android.application'
+```
+也可以通过 apply from .gradle引入其他gradle脚本中的函数定义或task等
+``` 
+apply from: '../pgyer/pgyer.gradle'
+```
+
+# 推荐阅读：
 
 [Android Gradle配置快速入门](http://www.paincker.com/android-gradle-basics)
 

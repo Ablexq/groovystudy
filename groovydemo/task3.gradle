@@ -1,0 +1,26 @@
+task testDependsOn() {
+    doLast {
+        println "task testDependsOn dolast three"
+    }
+    doFirst {
+        println "task testDependsOn doFirst three"
+    }
+}
+
+task testDependsOn2(dependsOn: testDependsOn) {
+    doLast {
+        println "tasks testDependsOn2"
+    }
+}
+
+//这里要执行 testDependsOn2 任务的话, 必须先执行 testDependsOn 任务, 
+// 因为 testDependsOn2 依赖 testDependsOn
+
+/*
+> Task :testDependsOn
+task testDependsOn doFirst three
+task testDependsOn dolast three
+
+> Task :testDependsOn2
+tasks testDependsOn2
+* */

@@ -1,0 +1,51 @@
+task method {
+    //方法调用
+    methodA(1, 2)
+    methodA 1, 2
+
+    //获取方法返回的结果
+    def a = methodA 10, 20
+    println '获取方法返回的结果：' + a
+
+    //代码块作为参数传递
+    def list = [1, 2, 3, 4, 5]
+    //闭包参数
+    list.each({
+        println "输出：" + it
+    })
+
+    println "==========================="
+
+    //Groovy规定，如果方法的最后一个参数是闭包，可以直接放到方法外面
+    list.each() {
+        println "输出2：" + it
+    }
+
+    println "==========================="
+
+    //简写方式
+    list.each {
+        println "输出3：" + it
+    }
+}
+
+//方法的定义
+def methodA(int a, int b) {
+    println a + b
+    //Groovy中return语句不是必须的，默认将最后一句代码的结果作为返回值
+    a + b
+}
+
+println "======================"
+//方法多元化(Multi-methods)，Groovy的参数类型决定于代码运行时，
+// Java正好相反，Java参数类型决定于编译时，主要用申明的类型决定。
+void method(String arg) {
+    println "this arg is string type"
+}
+
+void method(Object arg) {
+    println "this arg is Object type"
+}
+
+Object obj = "hello Groovy"
+method(obj) //this arg is string type

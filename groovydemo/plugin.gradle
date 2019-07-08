@@ -1,0 +1,30 @@
+
+// 调用HelloPlugin.gradle中的代码
+apply from: 'HelloPlugin.gradle'
+// 设置参数
+hello {
+    enable = true
+    text = 'World'
+}
+
+println("======================= ext 自定义属性 =============================")
+//给Project添加自定义属性
+ext.age = 18
+ext {
+    phone = 13888888888
+    address = 'Beijing'
+}
+//给Task添加自定义属性
+task customProperty {
+    ext.inner = 'innnnnner'
+
+    doLast {
+        println project.hasProperty('customProperty') //true
+        println project.hasProperty('age') //true
+        println project.hasProperty('inner')//返回fasle
+
+        println "${age}"
+        println "${phone}"
+        println "${inner}"
+    }
+}

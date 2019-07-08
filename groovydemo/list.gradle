@@ -1,0 +1,40 @@
+//========================== java.util.ArrayList ===========
+def fruits = ['apple', 'orange']//声明
+fruits << 'banana'//添加数据
+fruits[0] = "gradle"//集合中第一项重新赋值
+println fruits[0]//根据key取出数据
+println fruits.size
+println fruits.getClass()
+
+task list {
+    //定义List
+    def list = [1, 2, 3, 4, 5, 6]
+    def weekList = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
+    println "list的类型：" + list.class
+    println "weekList的类型：" + weekList.class
+
+    //访问集合里面的元素
+    println '第一个元素：' + list[0]//访问第一个元素
+    println '第二个元素：' + list[1]//访问第二个元素，以此类推
+
+    println '最后一个元素：' + list[-1]//访问最后一个元素
+    println '倒数第二个元素：' + list[-2]//访问倒数第二个元素，以此类推
+    println '某个范围内元素：' + list[2..4]//访问某个范围内元素，以此类推
+
+    //使用each遍历集合中的元素
+    weekList.each {
+        //使用it作为迭代的元素变量，不能写错喔
+        println it
+    }
+}
+
+println("----------------------------")
+
+def emptyList = []
+
+def arr = [100, "hello", true]
+arr[1] = "world"
+println arr[0]
+println arr[1]
+arr << 200      //List还有一种看起来很奇怪的操作符<<，左移位表示向List中添加新元素
+println arr.size

@@ -1,0 +1,18 @@
+
+project.afterEvaluate { project ->
+    println "this.project.afterEvaluate----(" + project + ")"
+}
+
+//gradle配置afterProject 、beforeProject
+//需要注意,两种方法的传入参数有差异,afterProject在配置参数失败后会传入两个参数,后者显示失败信息.
+gradle.afterProject { project, projectState ->
+    if (projectState.failure) {
+        println "this.gradle.afterEvaluate=====(" + project + " )FAILED"
+    } else {
+        println "this.gradle.afterEvaluate=====(" + project + " )succeeded"
+    }
+}
+
+gradle.beforeProject { project ->
+    println "this.gradle.beforeProject=====(" + project + ")"
+}

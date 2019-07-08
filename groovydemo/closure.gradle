@@ -1,0 +1,63 @@
+
+//闭包的声明:
+//      { parameters ->
+//                  code
+//      }
+
+task closure {
+    //自定义闭包的执行
+    mEach {
+        println it
+    }
+
+    //向闭包传递参数
+    mEachWithParams { m, n -> //m,n ->将闭包的参数和主体区分离开来
+        println "${m} is ${n}"
+    }
+}
+
+//1.定义一个方法，参数closure用于接收闭包
+//2.闭包的执行就是花括号里面代码的执行
+//3.闭包接收的参数就是闭包参数closure参数中的i，如果是一个参数默认就是it变量
+def mEach(closure) {
+    for (int i in 1..5) {
+        closure(i)
+    }
+}
+
+//向闭包传递参数
+def mEachWithParams(closure) {
+    def map = ["name": "Groovy", "age": 10]
+    map.each {
+        closure(it.key, it.value)
+    }
+}
+
+println("-------------------------------------")
+
+def closure = { int a, String b ->
+    println "a=${a}, b=${b}, I am a closure!"
+}
+
+// 这里省略了闭包的参数类型
+def test_type = { a, b ->
+    println "a=${a}, b=${b}, I am a closure!"
+}
+
+def xq = { a, b ->
+    a + b
+}
+
+closure(100, "xq")
+test_type.call(100, 200)    //闭包调用可以用call，也可以直接像Java方法一样加括号调用。
+def c = xq(100, 200)
+println c
+
+println("-------------------------------------")
+
+//无参闭包：
+//当闭包只有一个参数时，默认就是 it，反之闭包有多个参数时，就需要将参数定义出来
+def test = {
+    println "隐含的参数 ${it}, I am a closure!"
+}
+test(100)

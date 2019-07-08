@@ -1,0 +1,30 @@
+task testFirstLast() {
+    println "task clean 1111111"
+    doLast {
+        println "task clean dolast one"
+    }
+    doLast {
+        println "task clean dolast three"
+    }
+    println "task clean 3333333"
+    doFirst {
+        println "task clean doFirst three"
+    }
+    doFirst {
+        println "task clean doFirst one"
+    }
+    println "task clean 2222222"
+}
+
+/*
+> Configure project :
+task clean 1111111
+task clean 3333333
+task clean 2222222
+
+> Task :testFirstLast
+task clean doFirst one
+task clean doFirst three
+task clean dolast one
+task clean dolast three
+* */

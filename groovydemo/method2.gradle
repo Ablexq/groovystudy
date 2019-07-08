@@ -1,0 +1,24 @@
+def f1 = { text, num ->
+    println text + num
+}
+
+def f2(text, num) {
+    println text + num
+}
+
+void f3(String text, int num) {
+    println text + num
+}
+
+f1("1", 1)
+f2("2", 2)
+f3("3", 3)
+
+/*
+闭包Closure的定义格式是：
+def xxx = {paramters -> code}  //或者  
+
+def xxx = {无参数纯code直接调用it}  这种case不需要->符号
+//如果闭包没定义参数的话，则隐含有一个参数，这个参数名字叫it，和this的作用类似。it代表闭包的参数。
+def xxx = { it -> 纯code}
+* */
