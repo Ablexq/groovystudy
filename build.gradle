@@ -31,7 +31,9 @@ dependencies {
 apply from: "groovydemo/task4.gradle"
 
 //==============================================================
-
+println project.buildDir            //D:\Users\Administrator\IdeaProjects\groovystudy\build
+println projectDir.absolutePath     //D:\Users\Administrator\IdeaProjects\groovystudy
+println project.rootDir             //D:\Users\Administrator\IdeaProjects\groovystudy
 
 
 
